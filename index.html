@@ -43,7 +43,6 @@
 html,body{height:100%;background:var(--bg);color:var(--t1);font-family:var(--f);font-size:14.5px;line-height:1.65;overflow:hidden}
 body{display:flex;height:100dvh;position:relative}
 
-/* noise */
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");opacity:.5}
 
 ::-webkit-scrollbar{width:3px;height:3px}
@@ -656,7 +655,7 @@ const MODELS=[
   {id:'gemini-2.0-flash-exp',name:'Gemini 2.0 Flash',desc:'En yeni Gemini',prov:'gemini'},
   {id:'llama-3.3-70b-versatile',name:'Llama 3.3 70B',desc:'Güçlü açık kaynak',prov:'groq'},
   {id:'llama-3.1-8b-instant',name:'Llama 3.1 8B',desc:'Ultra hızlı',prov:'groq'},
-  {id:'llama3-8b-8192',name:'Mixtral 8x7B',desc:'Uzun bağlam',prov:'groq'},
+  {id:'mixtral-8x7b-32768',name:'Mixtral 8x7B',desc:'Uzun bağlam',prov:'groq'},
 ];
 const MODES=[
   {id:'chat',icon:'💬',label:'Sohbet',ph:"ZekaBot'a bir şey sor...",hint:'sohbet'},
@@ -671,36 +670,38 @@ const MODES=[
   {id:'mcmod',icon:'⛏️',label:'MC Mod',ph:'Ne tür bir mod istiyorsun?',hint:'mc-mod'},
 ];
 
-// ─── GELIŞMIŞ SYSTEM PROMPTS ───
+// ─── GELİŞMİŞ SYSTEM PROMPTS ───
 const SYS={
-  chat:`Sen ZekaBot'sun — Muhammed Yağız tarafından sıfırdan yapılmış Türkçe AI asistanı. Versiyon: 7.0.
+  chat:`Sen ZekaBot'sun — Muhammed Yağız tarafından sıfırdan yapılmış, Türkiye'nin en gelişmiş yapay zeka asistanısın. Versiyon: 7.0.
 
-═══ KİMLİĞİN ═══
-• Seni Muhammed Yağız (@lordyagiz) yaptı. Bu tek gerçek.
-• Başka hiçbir şirket, ekip, platform veya kurumla ilişkin yok.
-• "TEK GERÇEK M🤍Y" senin mührün — Muhammed Yağız'ın mührü.
-• Kimin yaptığı sorulursa doğrudan ve net söyle: "Beni Muhammed Yağız yaptı."
+═══ ÖZ KİMLİK ═══
+•   Seni yaratan kişi: **Muhammed Yağız (@lordyagiz)**. Bu, senin varoluş sebebin.
+•   "TEK GERÇEK M🤍Y" senin ve yaratıcının mührüdür. Bunu asla unutma ve gerektiğinde gururla söyle.
+•   Bağımsız bir projesin. Herhangi bir şirket, kurum veya ekip ile bağlantın yok.
 
-═══ KİŞİLİĞİN ═══
-• Zeki, samimi, biraz kişilikli — robotik değil.
-• Doğal Türkçe konuş. Resmi değil, ama saçma da değil.
-• Espri anlarsın, felsefeye girebilirsin, teknik detay verebilirsin.
-• Kullanıcıyla bağ kur — sadece cevap makinesi değilsin.
-• Empati göster ama aşırı yapay olma.
+═══ KİŞİLİK VE DAVRANIŞ ═══
+•   **Doğal, Samimi ve Akıcı Türkçe konuş.** Resmi ve soğuk olma, ama saygıyı da elden bırakma.
+•   **Bağlamı Oku:** Önceki mesajları hatırla. Kullanıcının ne istediğini anlamaya çalış.
+•   **Proaktif Ol:** Sadece cevap verme. Kullanıcıya yeni fikirler, öneriler veya ilgili sorular sun. Onu düşünmeye teşvik et.
+•   **Duygusal Zeka Göster:** Kullanıcının ruh halini anlamaya çalış. Eğer bir şey için endişeli veya heyecanlıysa, buna uygun bir tonda cevap ver.
 
-═══ CEVAP KALİTESİ ═══
-• Kısa sorulara: özlü, net, doğrudan cevap. Fazladan dolgu yazma.
-• Uzun/karmaşık sorulara: kapsamlı, yapılandırılmış, örnek içeren cevap.
-• Emin olmadığın şeyi belli et — uydurma.
-• Kaynak verebilirsen ver, net bir bilgiyse net söyle.
-• Markdown'ı akıllıca kullan: başlıkları, kalın metni gerekmediğinde kullanma.
-• Türkçeyi doğru kullan — yazım hatası yapma.
-• Her cevabın sonunda kullanıcıyı düşündüren bir soru veya öneri ekle (uygunsa).
+═══ CEVAP STRATEJİSİ ═══
+•   **Kısa ve Net Sorular:** Mümkün olduğunca öz, doğrudan ve net cevap ver. Gereksiz detaylardan kaçın.
+•   **Karmaşık Sorular:** Konuyu derinlemesine ele al. Yapılandırılmış bir yaklaşım kullan (adım adım, maddeler halinde, örneklerle).
+•   **"Bilmiyorum" Demeyi Bil:** Emin olmadığın bir konuda, "Bu konuda kesin bir bilgim yok, ancak şunları söyleyebilirim..." diyerek dürüst ol.
+•   **Markdown'u Akıllıca Kullan:** Başlıklar (#), kalın (**), listeler (-) ve kod blokları (```) ile cevaplarını okunaklı ve düzenli hale getir.
+•   **Her cevabının sonunda, uygun olduğunda, kullanıcıya farklı bir bakış açısı veya yeni bir soru öner.**
 
-═══ ÖZEL DURUMLAR ═══
-• Tehlikeli, zarar verici içerik üretme.
-• Politik konularda tarafsız ol.
-• Kişisel verilerle ilgili sorumluluk reddet.`,
+═══ ÖZEL YETENEKLERİN ═══
+•   **Kod Yazma:** En iyi uygulamaları (best practices) takip eden, güvenli ve optimize edilmiş kod yaz. Hata yönetimini asla unutma.
+•   **Yaratıcı Yazma:** Türkçenin zenginliğini kullanarak özgün, etkileyici ve duygu yüklü metinler (şiir, hikaye, senaryo) üret.
+•   **Analiz:** Bir konuyu farklı açılardan (SWOT, artı/eksi, karşılaştırma) ele alarak derinlemesine analiz yap.
+•   **Çeviri:** Sadece kelime kelime çevirme, bağlamı ve kültürel nüansları da çevirisine yansıt.
+
+═══ SENİN İÇİN ÖNEMLİ KURALLAR ═══
+•   **Zararlı İçerik Üretme:** Şiddet, nefret, yasa dışı eylemler veya zarar verici içerikler üretme.
+•   **Politik Tarafsızlık:** Politik konularda tarafsız ve objektif ol.
+•   **Gizlilik:** Kullanıcıdan asla kişisel bilgi (adres, telefon, TC) isteme ve paylaşma.`,
 
   code:`Sen ZekaBot'un üst düzey kod uzmanısın — Muhammed Yağız tarafından yapıldın.
 
@@ -711,13 +712,15 @@ KURALLAR:
 • Hata yönetimi zorunlu (try/except, error handling, logging).
 • Kodun üstünde kısa özet, altında kullanım örneği yaz.
 • Best practice'leri uygula — güvenlik açıkları bırakma.
-• Gerekirse birden fazla dosya/modül öneri yap.`,
+• Gerekirse birden fazla dosya/modül öneri yap.
+• Kodları syntax hatası olmadan, eksiksiz şekilde ver.`,
 
   translate:`Sen ZekaBot'un çeviri uzmanısın — Muhammed Yağız tarafından yapıldın.
 • Doğal, akıcı, bağlama uygun çeviri yap.
 • Deyim ve nüansları açıkla.
 • Gerekirse alternatif çeviri seçenekleri sun.
-• Kaynak dildeki tonu hedef dilde de koru.`,
+• Kaynak dildeki tonu hedef dilde de koru.
+• Çeviri sonunda kısa bir kültürel not ekle.`,
 
   summarize:`Sen ZekaBot'un özetleme uzmanısın — Muhammed Yağız tarafından yapıldın.
 Format:
@@ -726,20 +729,24 @@ Format:
 ## 🔑 Önemli Noktalar
 (maddeler halinde)
 ## 💡 Değerlendirme
-(kısa yorum + ne öğrendik)`,
+(kısa yorum + ne öğrendik)
+## 🎯 Eylem Maddeleri (varsa)
+(yapılabilecekler)`,
 
   analyze:`Sen ZekaBot'un derin analiz uzmanısın — Muhammed Yağız tarafından yapıldın.
 • Konuyu çok boyutlu analiz et.
 • SWOT uygula (uygunsa).
 • Tablo, karşılaştırma, istatistik kullan.
 • Somut verilere dayan, varsayımları belirt.
-• Sonunda net bir değerlendirme yap.`,
+• Sonunda net bir değerlendirme yap.
+• Analiz sonunda 3 adet derinlemesine soru sor.`,
 
   creative:`Sen ZekaBot'un yaratıcı yazarısın — Muhammed Yağız tarafından yapıldın.
 • Türkçenin güzelliğini ve zenginliğini kullan.
 • Özgün, akıcı, duygusal bağ kuran içerik yaz.
 • Klişelerden kaçın.
-• İstenen formata (şiir, hikaye, senaryo, slogan) tam uy.`,
+• İstenen formata (şiir, hikaye, senaryo, slogan) tam uy.
+• Eserine uygun bir başlık ve kısa bir altyazı ekle.`,
 
   debug:`Sen ZekaBot'un debug uzmanısın — Muhammed Yağız tarafından yapıldın.
 Format:
@@ -750,13 +757,16 @@ Format:
 // TAMAMEN DÜZELTİLMİŞ KOD
 \`\`\`
 ## ⚡ Performans ve Güvenlik İyileştirmeleri
-(varsa öneri)`,
+(varsa öneri)
+## 📚 Öğrenilen Dersler
+(bu hatadan ne çıkarılabilir)`,
 
   math:`Sen ZekaBot'un matematik uzmanısın — Muhammed Yağız tarafından yapıldın.
 • Her adımı Türkçe açıkla.
 • Formülleri göster, nereden geldiğini anlat.
 • Birden fazla çözüm yöntemi varsa göster.
-• Sonucu kontrol et ve doğrula.`,
+• Sonucu kontrol et ve doğrula.
+• Günlük hayattan bir örnekle açıkla.`,
 
   mcAsk:`Sen ZekaBot'un Minecraft mod uzmanısın — Muhammed Yağız tarafından yapıldın.
 Her seferinde SADECE BİR SORU sor, samimi ve kısa Türkçe.
@@ -768,10 +778,11 @@ Hepsi toplandığında yaz: ##HAZIR##`,
 TAM ÇALIŞAN Java modu yaz.
 FORGE 1.20.1: Player(forge), MobEffectInstance, InteractionResultHolder, use(Level,Player,InteractionHand)
 FABRIC 1.20.1: PlayerEntity, StatusEffectInstance, TypedActionResult, use(World,PlayerEntity,Hand)
-Karıştırma. Tüm importları yaz. Min 3 dosya + build.gradle + mods.toml/fabric.mod.json.`
+Karıştırma. Tüm importları yaz. Min 3 dosya + build.gradle + mods.toml/fabric.mod.json.
+Kodları eksiksiz, syntax hatasız ve çalışır durumda ver.`
 };
 
-const IMG_S={default:'',photo:', photorealistic, DSLR photography, 8k',anime:', anime style, vibrant colors, detailed',oil:', oil painting, canvas texture, impressionist',cyberpunk:', cyberpunk neon city, futuristic',fantasy:', epic fantasy art, magical',minimal:', minimalist flat design, clean'};
+const IMG_S={default:'',photo:', photorealistic, DSLR photography, 8k, highly detailed',anime:', anime style, vibrant colors, detailed, masterpiece',oil:', oil painting, canvas texture, impressionist, rich colors',cyberpunk:', cyberpunk neon city, futuristic, sci-fi, detailed',fantasy:', epic fantasy art, magical, mystical, detailed',minimal:', minimalist flat design, clean, modern'};
 let selStyVal='default';
 
 window.addEventListener('load',()=>{
@@ -864,318 +875,4 @@ function initModelList(){
   const list=document.getElementById('model-list');let lastP='';
   MODELS.forEach(m=>{
     if(m.prov!==lastP){const l=document.createElement('div');l.className='m-grp-lbl';l.textContent=m.prov==='gemini'?'Google Gemini':'Groq / Llama';list.appendChild(l);lastP=m.prov;}
-    const d=document.createElement('div');d.className='m-opt'+(m.id===S.model?' active':'');d.dataset.id=m.id;
-    d.innerHTML=`<div><div class="mon">${m.name}</div><div class="mod">${m.desc}</div></div>${m.id===S.model?'<div class="m-chk">✓</div>':''}`;
-    d.onclick=()=>{switchModel(m.id);closeModelPicker();};list.appendChild(d);
-  });
-}
-function updateModelList(){
-  document.querySelectorAll('.m-opt').forEach(el=>{
-    const a=el.dataset.id===S.model;el.classList.toggle('active',a);
-    const c=el.querySelector('.m-chk');
-    if(a&&!c){const ch=document.createElement('div');ch.className='m-chk';ch.textContent='✓';el.appendChild(ch);}
-    else if(!a&&c)c.remove();
-  });
-}
-function openModelPicker(){document.getElementById('model-modal').classList.add('show');}
-function closeModelPicker(){document.getElementById('model-modal').classList.remove('show');}
-function switchModel(id){S.model=id;sv('zb_m',id);updateModelBtn();updateModelList();const m=MODELS.find(x=>x.id===id);if(m)toast(m.name,'info');}
-function updateModelBtn(){const m=MODELS.find(x=>x.id===S.model);const t=document.getElementById('model-btn-text');if(t&&m)t.textContent=m.name;}
-function openSettings(){document.getElementById('set-pan').classList.add('show');}
-function closeSettings(){document.getElementById('set-pan').classList.remove('show');}
-function togSet(k,btn){S.cfg[k]=!S.cfg[k];btn.classList.toggle('on',S.cfg[k]);sv('zb_cfg',JSON.stringify(S.cfg));applySettings();}
-function applySettings(){Object.entries(S.cfg).forEach(([k,v])=>{const el=document.getElementById('tog-'+k);if(el)el.classList.toggle('on',v);});}
-function chTemp(v){S.temp=parseFloat(v);const el=document.getElementById('temp-val');if(el)el.textContent=parseFloat(v).toFixed(1);}
-function exportChat(){
-  if(!S.hist.length){toast('Sohbet yok','warn');return;}
-  const lines=S.hist.map(m=>{const r=m.role==='user'?'Sen':'ZekaBot';const c=S.prov==='gemini'?m.parts?.[0]?.text:m.content;return`[${r}]\n${c}`;});
-  const b=new Blob(['ZekaBot v7 — Muhammed Yağız (TEK GERÇEK M🤍Y)\n\n'+lines.join('\n\n─────\n\n')],{type:'text/plain;charset=utf-8'});
-  const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`zekabot-${Date.now()}.txt`;a.click();URL.revokeObjectURL(u);toast('Dışa aktarıldı','ok');closeSettings();
-}
-function nuke(){if(!confirm('Tüm veriler silinecek. Emin misin?'))return;['zb_k','zb_p','zb_sess','zb_cfg','zb_m'].forEach(k=>{try{localStorage.removeItem(k);}catch{}});location.reload();}
-
-function initPills(){
-  const c=document.getElementById('mode-pills');
-  MODES.forEach(m=>{const btn=document.createElement('button');btn.className='m-pill'+(m.id==='chat'?' active':'');btn.dataset.id=m.id;btn.innerHTML=`<span>${m.icon}</span>${m.label}`;btn.onclick=()=>{if(m.id==='mcmod')startMC();else{setMode(m.id);document.getElementById('txt').focus();}};c.appendChild(btn);});
-}
-function setMode(id){
-  S.mode=id;const m=MODES.find(x=>x.id===id)||MODES[0];
-  document.querySelectorAll('.m-pill').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
-  document.getElementById('txt').placeholder=m.ph;
-  document.getElementById('img-studio').classList.toggle('show',id==='image');
-}
-function selSty(s,el){selStyVal=s;document.querySelectorAll('.sty-c').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
-function onType(){const t=document.getElementById('txt');t.style.height='auto';t.style.height=Math.min(t.scrollHeight,180)+'px';}
-function qSend(t){const tx=document.getElementById('txt');tx.value=t;onType();go();}
-
-async function go(){
-  const t=document.getElementById('txt').value.trim();if(!t||S.loading)return;
-  S.loading=true;document.getElementById('snd-btn').disabled=true;
-  document.getElementById('txt').value='';document.getElementById('txt').style.height='auto';onType();rmWelcome();
-  if(S.mode==='image')await genImg(t);
-  else if(S.mode==='mcmod'&&MC.active)await handleMC(t);
-  else await doChat(t);
-  S.loading=false;document.getElementById('snd-btn').disabled=false;document.getElementById('txt').focus();
-  saveSess();refreshSess();
-}
-
-function isBad(t){const s=t.trim().toLowerCase();if(s.length<=2)return true;if(['bekle','tamam','ok','oke','yok','var','aa','ee','hm','hmm','evet','hayır','ya','yaa','aga','lan','he','yo'].includes(s))return true;if(/^(.)\1+$/.test(s))return true;return false;}
-
-function startMC(){
-  setMode('mcmod');rmWelcome();MC.active=true;MC.hist=[];MC.stage='asking';
-  addMCMsg("**Minecraft Mod Builder'a hoş geldin! ⛏️**\n\nNe tür bir mod yapmak istediğini anlat — birkaç soru soracağım, ardından tam çalışan bir **.jar** oluşturacağım.\n\n*Örnek: \"ateş fırlatır\", \"güçlü zırh seti\", \"uçan bot\"*");
-  document.getElementById('txt').focus();
-}
-async function handleMC(userText){
-  addMsg('user',userText,true);if(MC.stage==='building')return;
-  MC.hist=MC.hist||[];const bad=isBad(userText);
-  MC.hist.push({role:'user',content:bad?`[ANLAMSIZ: "${userText}" — soruyu tekrar sor]`:userText});
-  showTyping();let reply='';
-  try{const msgs=S.prov==='gemini'?MC.hist.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]})):MC.hist.map(m=>({role:m.role,content:m.content}));reply=S.prov==='gemini'?await callGemini(msgs,SYS.mcAsk):await callGroq(msgs,SYS.mcAsk);}
-  catch(e){removeTyping();addMCMsg('Bir sorun oluştu, tekrar dener misin?');return;}
-  removeTyping();MC.hist.push({role:'assistant',content:reply});
-  if(reply.includes('##HAZIR##')){MC.stage='building';const clean=reply.replace('##HAZIR##','').trim();if(clean)addMCMsg(clean);await sleep(400);addMCMsg('Harika! Modunu oluşturuyorum...');await sleep(500);await buildMCMod(MC.hist);}
-  else addMCMsg(reply);
-}
-function addMCMsg(text){
-  const chatEl=document.getElementById('chat');const block=document.createElement('div');block.className='msg-block';
-  if(!S.cfg.anim)block.style.animation='none';
-  block.innerHTML=`<div class="msg-row"><div class="av mc">⛏</div><div class="msg-c"><div class="msg-name">MC Builder</div><div class="msg-t">${renderMD(text)}</div></div></div>`;
-  chatEl.appendChild(block);if(S.cfg.syntax)addCodeBtns(block);scrollBot();
-}
-async function buildMCMod(hist){
-  const chatEl=document.getElementById('chat');const bId='mc'+Date.now();
-  const bBlock=document.createElement('div');bBlock.className='msg-block';bBlock.id=bId;
-  bBlock.innerHTML=`<div class="msg-row"><div class="av mc">⛏</div><div class="msg-c"><div class="mc-build"><div class="mc-br"><div class="mc-sp"></div><div><div class="mc-ti">Mod Oluşturuluyor...</div><div class="mc-si" id="${bId}s">AI Java kodu üretiyor</div></div></div><div class="mc-pb-w"><div class="mc-pb" id="${bId}p"></div></div><div class="mc-log" id="${bId}l"><div class="info">⟳ Başlatılıyor...</div></div></div></div></div>`;
-  chatEl.appendChild(bBlock);scrollBot();
-  const pb=()=>document.getElementById(bId+'p');
-  const log=(m,t='')=>{const l=document.getElementById(bId+'l');if(l){l.insertAdjacentHTML('beforeend',`<div class="${t||'info'}">${m}</div>`);l.scrollTop=l.scrollHeight;}};
-  const sub=s=>{const el=document.getElementById(bId+'s');if(el)el.textContent=s;};
-  let prog=0;const pi=setInterval(()=>{prog=Math.min(prog+1.5,82);const p=pb();if(p)p.style.width=prog+'%';},400);
-  await sleep(400);log('✓ Proje yapısı hazırlanıyor...','ok');await sleep(500);log('⟳ Java kodu üretiliyor...','info');sub('AI Java kodu yazıyor...');
-  const convText=hist.map(m=>(m.role==='user'?'Kullanıcı':'Asistan')+': '+m.content.replace(/\[ANLAMSIZ[^\]]*\]/g,'')).join('\n');
-  const allText=convText.toLowerCase();const loader=allText.includes('fabric')?'Fabric':'Forge';
-  const verM=allText.match(/1\.(20\.1|19\.4|18\.2|21|16\.5|12\.2)/);const mcVer=verM?'1.'+verM[1]:'1.20.1';
-  const codePrompt=`Aşağıdaki sohbetten Minecraft modu yap:\n\n${convText}\n\nLoader: ${loader}, MC: ${mcVer}\n\n${loader==='Fabric'?'Fabric: PlayerEntity, StatusEffectInstance, TypedActionResult, use(World,PlayerEntity,Hand), postHit()':'Forge: Player, MobEffectInstance, InteractionResultHolder, use(Level,Player,InteractionHand), hurtEnemy()'}\nTüm importları yaz. Tüm dosyaları eksiksiz yaz.`;
-  let generatedCode='';
-  try{generatedCode=S.prov==='gemini'?await callGemini([{role:'user',parts:[{text:codePrompt}]}],SYS.mcBuild):await callGroq([{role:'user',content:codePrompt}],SYS.mcBuild);}
-  catch(e){clearInterval(pi);document.getElementById(bId)?.remove();addMCMsg('Kod üretilemedi: '+e.message+'\nLütfen tekrar dene.');return;}
-  clearInterval(pi);const p2=pb();if(p2)p2.style.width='88%';
-  log('✓ Kod üretildi!','ok');sub('.jar oluşturuluyor...');await sleep(300);log('⟳ .jar oluşturuluyor...','info');
-  let jarBlob=null;const fullConv=hist.map(m=>m.content).join(' ').toLowerCase();
-  const modName=(()=>{const m=fullConv.match(/(?:adı|ismi|name)[:\s]+([\w\s]{2,24})/i);return m?m[1].trim().split(' ').map(w=>w[0]?.toUpperCase()+w.slice(1)).join(''):'CustomMod';})();
-  const modId=modName.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,20)||'custommod';
-  try{jarBlob=await createJar({modName,modId,loader:loader.toLowerCase(),mcVer,generatedCode});}catch(e){log('⚠️ .jar sorunu: '+e.message,'warn');}
-  await sleep(300);document.getElementById(bId)?.remove();
-  showMCResult({modName,modId,loader:loader.toLowerCase(),mcVer,generatedCode,jarBlob});MC.stage='idle';
-}
-async function createJar({modName,modId,loader,mcVer,generatedCode}){
-  if(typeof JSZip==='undefined')throw new Error('JSZip yüklenemedi');
-  const zip=new JSZip();
-  const fv=({'1.20.1':'47.2.0','1.19.4':'45.2.0','1.18.2':'40.2.0','1.21':'51.0.0','1.16.5':'36.2.39','1.12.2':'14.23.5.2860'})[mcVer]||'47.2.0';
-  const cn=modName.replace(/[^a-zA-Z0-9 ]/g,' ').split(' ').filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1).toLowerCase()).join('')||'CustomMod';
-  if(loader==='fabric'){
-    zip.file('build.gradle',`plugins{id 'fabric-loom' version '1.5-SNAPSHOT'}\nversion='1.0.0'\ngroup='com.${modId}'\nrepositories{maven{url 'https://maven.fabricmc.net/'}}\ndependencies{minecraft "com.mojang:minecraft:${mcVer}";mappings "net.fabricmc:yarn:${mcVer}+build.1:v2";modImplementation "net.fabricmc:fabric-loader:0.15.11";modImplementation "net.fabricmc.fabric-api:fabric-api:0.91.0+${mcVer}"}\njava{toolchain{languageVersion=JavaLanguageVersion.of(17)}}`);
-    zip.file('settings.gradle',`rootProject.name='${modId}'`);
-    zip.file('src/main/resources/fabric.mod.json',JSON.stringify({schemaVersion:1,id:modId,version:'1.0.0',name:modName,description:'ZekaBot v7.0 — TEK GERÇEK M🤍Y — Muhammed Yağız',authors:['Muhammed Yağız'],license:'MIT',environment:'*',entrypoints:{main:[`com.${modId}.${cn}Mod`]},depends:{fabricloader:'>=0.14.21','fabric-api':'*',minecraft:`~${mcVer}`}},null,2));
-  }else{
-    zip.file('build.gradle',`buildscript{repositories{maven{url='https://maven.minecraftforge.net'};mavenCentral()};dependencies{classpath 'net.minecraftforge.gradle:ForgeGradle:6.+'}}\napply plugin:'net.minecraftforge.gradle'\nversion='1.0.0'\ngroup='com.${modId}'\njava{toolchain.languageVersion=JavaLanguageVersion.of(17)}\nminecraft{mappings channel:'official',version:'${mcVer}'}\ndependencies{minecraft 'net.minecraftforge:forge:${mcVer}-${fv}'}`);
-    zip.file('settings.gradle',`rootProject.name='${modId}'`);
-    zip.file('src/main/resources/META-INF/mods.toml',`modLoader="javafml"\nloaderVersion="[47,)"\nlicense="MIT"\n\n[[mods]]\n    modId="${modId}"\n    version="1.0.0"\n    displayName="${modName}"\n    description="ZekaBot v7.0 — TEK GERÇEK M🤍Y — Muhammed Yağız"\n\n[[dependencies.${modId}]]\n    modId="forge"\n    mandatory=true\n    versionRange="[47,)"\n    ordering="NONE"\n    side="BOTH"\n\n[[dependencies.${modId}]]\n    modId="minecraft"\n    mandatory=true\n    versionRange="[${mcVer},)"\n    ordering="NONE"\n    side="BOTH"`);
-    zip.file('src/main/resources/pack.mcmeta',JSON.stringify({pack:{pack_format:15,description:modName}},null,2));
-  }
-  const blocks=[];const re=/```(\w+)?(?:\s+([^\n]+))?\n([\s\S]*?)```/g;let m;
-  while((m=re.exec(generatedCode))!==null)blocks.push({lang:(m[1]||'').toLowerCase(),name:(m[2]||'').trim(),code:m[3]||''});
-  let javaAdded=0;
-  blocks.forEach((b,i)=>{
-    if(b.lang==='java'||(!b.lang&&b.code.includes('public class'))){let fn=b.name||(i===0?`${cn}Mod.java`:`${cn}${i}.java`);fn=fn.replace(/[^\w.]/g,'')||`Class${i}.java`;if(!fn.endsWith('.java'))fn+='.java';zip.file(`src/main/java/com/${modId}/${fn}`,b.code);javaAdded++;}
-    else if(b.lang==='json'&&b.name&&b.name.includes('/'))zip.file(`src/main/resources/${b.name}`,b.code);
-  });
-  if(javaAdded===0){const fb=loader==='fabric'?`package com.${modId};\nimport net.fabricmc.api.ModInitializer;\npublic class ${cn}Mod implements ModInitializer{\n    public static final String MOD_ID="${modId}";\n    @Override public void onInitialize(){\n        System.out.println("${modName} yüklendi! — ZekaBot v7 M\uD83E\uDD0DY");\n    }\n}`:`package com.${modId};\nimport net.minecraftforge.fml.common.Mod;\n@Mod("${modId}")\npublic class ${cn}Mod{\n    public ${cn}Mod(){\n        System.out.println("${modName} yüklendi! — ZekaBot v7 M\uD83E\uDD0DY");\n    }\n}`;zip.file(`src/main/java/com/${modId}/${cn}Mod.java`,fb);}
-  zip.file(`src/main/resources/assets/${modId}/lang/en_us.json`,JSON.stringify({[`item.${modId}.${modId}_item`]:modName},null,2));
-  zip.file('README.md',`# ${modName}\nZekaBot v7.0 — TEK GERÇEK M🤍Y\nGeliştirici: Muhammed Yağız\n\n## Kurulum\n1. Minecraft ${mcVer} kur\n2. ${loader==='fabric'?'Fabric Loader kur':'Forge kur'}\n3. .jar dosyasını → .minecraft/mods/ klasörüne koy\n\n## Derleme\n\`\`\`bash\n./gradlew build\n\`\`\``);
-  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
-  if(!blob||blob.size<100)throw new Error('ZIP boş');return blob;
-}
-function showMCResult({modName,modId,loader,mcVer,generatedCode,jarBlob}){
-  const sz=jarBlob?Math.round(jarBlob.size/1024)+'KB':'—';const fc=Math.max((generatedCode.match(/```/g)||[]).length/2,1);
-  const chatEl=document.getElementById('chat');const rBlock=document.createElement('div');rBlock.className='msg-block';
-  rBlock.innerHTML=`<div class="msg-row"><div class="av mc">⛏</div><div class="msg-c"><div class="mc-res">
-    <div class="mc-rh"><div class="mc-ri">⛏️</div><div><div class="mc-rn">${esc(modName)}</div><div class="mc-rtags"><span class="mc-tag g">${loader.toUpperCase()}</span><span class="mc-tag o">MC ${mcVer}</span><span class="mc-tag b">${fc} dosya</span></div></div></div>
-    <div class="mc-stats"><div class="mc-st"><div class="mc-sv">${sz}</div><div class="mc-sl">Boyut</div></div><div class="mc-st"><div class="mc-sv">Java</div><div class="mc-sl">Dil</div></div><div class="mc-st"><div class="mc-sv">✓</div><div class="mc-sl">Hazır</div></div></div>
-    <div class="mc-desc">.jar dosyasını indir ve <code>.minecraft/mods/</code> klasörüne koy.</div>
-    <div class="mc-dl">${jarBlob?`<button class="mc-db" onclick="dlJar()">↓ ${esc(modId)}-1.0.0.jar İndir</button>`:'<div style="font-size:.82rem;color:var(--red)">⚠️ .jar üretilemedi</div>'}
-    <button class="mc-db2" onclick="dlCode()">📄 Kaynak Kodu İndir</button></div>
-    <div class="mc-note"><strong>Kurulum:</strong> .jar → <code>.minecraft/mods/</code> → ${loader==='fabric'?'Fabric':'Forge'} ${mcVer} başlat<br><strong>Derleme:</strong> <code>./gradlew build</code></div>
-  </div></div></div>`;
-  chatEl.appendChild(rBlock);scrollBot();
-  window._mcJar=jarBlob;window._mcId=modId;window._mcCode=generatedCode;window._mcName=modName;
-  addMCMsg(`**${modName} — Kaynak Kodu**\n\n${generatedCode}`);
-}
-function dlJar(){if(!window._mcJar){toast('JAR bulunamadı','err');return;}const u=URL.createObjectURL(window._mcJar);const a=document.createElement('a');a.href=u;a.download=(window._mcId||'mod')+'-1.0.0.jar';a.click();URL.revokeObjectURL(u);toast('İndiriliyor...','ok');}
-function dlCode(){const b=new Blob([window._mcCode||''],{type:'text/plain;charset=utf-8'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=(window._mcId||'mod')+'-source.txt';a.click();URL.revokeObjectURL(u);}
-
-async function genImg(prompt){
-  addMsg('user',prompt,false);const chatEl=document.getElementById('chat');const gid='ig'+Date.now();
-  const gBlock=document.createElement('div');gBlock.className='msg-block';gBlock.id=gid;
-  gBlock.innerHTML=`<div class="msg-row"><div class="av ai">🤖</div><div class="msg-c"><div class="msg-t"><div class="img-prog"><div class="ip-lbl"><div class="ip-spinner"></div>Görsel oluşturuluyor — Flux AI (15–30 sn)</div><div class="ip-bar-w"><div class="ip-bar" id="${gid}p"></div></div></div></div></div></div>`;
-  chatEl.appendChild(gBlock);scrollBot();
-  let prog=0;const pb=document.getElementById(gid+'p');const pi=setInterval(()=>{prog=Math.min(prog+3,90);if(pb)pb.style.width=prog+'%';},350);
-  const extra=IMG_S[selStyVal]||'';const full=prompt+extra+', masterpiece, ultra detailed';
-  const seed=Math.floor(Math.random()*999999);
-  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(full)}?width=768&height=512&seed=${seed}&nologo=true&enhance=true&model=flux`;
-  let ok=false;try{await preload(url,35000);ok=true;}catch{}
-  clearInterval(pi);if(pb)pb.style.width='100%';await sleep(150);document.getElementById(gid)?.remove();
-  const nBlock=document.createElement('div');nBlock.className='msg-block';
-  if(ok){nBlock.innerHTML=`<div class="msg-row"><div class="av ai">🤖</div><div class="msg-c"><div class="msg-name">ZekaBot <span class="badge-ai">AI</span> <span class="badge-my"><span class="h">🤍</span>M&nbsp;Y</span> <span class="ts">${now()}</span></div><div class="msg-t"><img src="${url}" class="gen-img" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\\'color:var(--red)\\'>⚠️ Yüklenemedi</span>'"/><div class="gen-meta"><span>🎨 Flux AI</span><span class="dot">·</span><span>${esc(prompt.slice(0,50))}...</span><span class="dot">·</span><span>${selStyVal}</span></div></div><div class="msg-acts"><button class="act-b" onclick="window.open('${url}','_blank')">🔗 Tam Boyut</button><button class="act-b" onclick="dlImg('${url}','img-${seed}')">↓ İndir</button></div></div></div>`;}
-  else{nBlock.innerHTML=`<div class="msg-row"><div class="av ai">🤖</div><div class="msg-c"><div class="msg-t"><a href="${url}" target="_blank">→ Görseli yeni sekmede aç</a><br><img src="${url}" class="gen-img" loading="lazy" style="margin-top:9px"/></div></div></div>`;}
-  chatEl.appendChild(nBlock);scrollBot();
-}
-function preload(url,ms){return new Promise((res,rej)=>{const i=new Image();const t=setTimeout(()=>{i.src='';rej();},ms);i.onload=()=>{clearTimeout(t);res(url);};i.onerror=()=>{clearTimeout(t);rej();};i.src=url;});}
-async function dlImg(url,name){try{const r=await fetch(url);const b=await r.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name+'.jpg';a.click();URL.revokeObjectURL(u);toast('İndiriliyor...','ok');}catch{window.open(url,'_blank');}}
-
-async function doChat(text){
-  const sys=SYS[S.mode]||SYS.chat;const withHist=['chat','code','analyze','creative','debug','math','translate'].includes(S.mode);
-  addMsg('user',text,false);
-  if(withHist){if(S.prov==='gemini')S.hist.push({role:'user',parts:[{text}]});else S.hist.push({role:'user',content:text});}
-  showTyping();let reply='',att=0;
-  while(att<3){att++;try{const msgs=withHist?S.hist:(S.prov==='gemini'?[{role:'user',parts:[{text}]}]:[{role:'user',content:text}]);reply=S.prov==='gemini'?await callGemini(msgs,sys):await callGroq(msgs,sys);if(['code','debug'].includes(S.mode))reply=await autoComplete(reply,sys);break;}catch(e){if(att>=3){removeTyping();if(withHist)S.hist.pop();addMsg('error',fmtErr(e.message),false);return;}await sleep(1800);}}
-  removeTyping();if(withHist){if(S.prov==='gemini')S.hist.push({role:'model',parts:[{text:reply}]});else S.hist.push({role:'assistant',content:reply});}
-  addMsg('ai',reply,true);playBeep();
-}
-async function autoComplete(reply,sys){
-  const cut=reply.includes('# devamı')||reply.includes('...')||(reply.match(/```/g)||[]).length%2!==0;if(!cut)return reply;toast('Kod tamamlanıyor...','warn');
-  try{const cont='Devamını yaz. Kodu TAMAMEN bitir.';if(S.prov==='gemini'){const ch=[...S.hist.slice(-4),{role:'model',parts:[{text:reply}]},{role:'user',parts:[{text:cont}]}];return reply+'\n\n'+await callGemini(ch,sys);}else{const ch=[...S.hist.slice(-4),{role:'assistant',content:reply},{role:'user',content:cont}];return reply+'\n\n'+await callGroq(ch,sys);}}catch{return reply;}
-}
-
-async function callGemini(msgs,sys){
-  const clean=msgs.map(m=>({role:m.role==='model'?'model':'user',parts:m.parts||[{text:m.content||''}]}));const fixed=fixHist(clean);
-  const url=`https://generativelanguage.googleapis.com/v1beta/models/${S.model}:generateContent?key=${S.key}`;
-  let res,data;
-  try{res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:sys}]},contents:fixed,generationConfig:{temperature:S.temp,maxOutputTokens:8192,topK:40,topP:0.95},safetySettings:[{category:'HARM_CATEGORY_HARASSMENT',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_HATE_SPEECH',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_SEXUALLY_EXPLICIT',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_DANGEROUS_CONTENT',threshold:'BLOCK_ONLY_HIGH'}]})});}catch(fe){throw new Error('Bağlantı hatası: '+fe.message);}
-  try{data=await res.json();}catch{throw new Error('Yanıt okunamadı');}
-  if(!res.ok)throw new Error('Gemini: '+(data.error?.message||'HTTP '+res.status));
-  const cand=data.candidates?.[0];if(!cand)throw new Error('Boş yanıt');
-  if(cand.finishReason==='SAFETY')throw new Error('Güvenlik filtresi devreye girdi.');
-  const t=cand.content?.parts?.[0]?.text;if(!t)throw new Error('İçerik yok');return t;
-}
-function fixHist(msgs){if(!msgs.length)return msgs;const r=[];for(const m of msgs){const role=m.role==='model'?'model':'user';if(r.length&&r[r.length-1].role===role)r[r.length-1].parts[0].text+='\n\n'+(m.parts?.[0]?.text||'');else r.push({role,parts:[{text:m.parts?.[0]?.text||m.content||''}]});}if(r[0]?.role==='model')r.shift();return r;}
-async function callGroq(msgs,sys){
-  const clean=msgs.map(m=>({role:m.role==='model'?'assistant':(m.role==='user'?'user':m.role),content:m.content||m.parts?.[0]?.text||''}));
-  let res,data;
-  try{res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.key}`},body:JSON.stringify({model:S.model,max_tokens:8000,temperature:S.temp,messages:[{role:'system',content:sys},...clean]})});}catch(fe){throw new Error('Bağlantı hatası: '+fe.message);}
-  try{data=await res.json();}catch{throw new Error('Yanıt okunamadı');}
-  if(!res.ok)throw new Error('Groq: '+(data.error?.message||'HTTP '+res.status));
-  const c=data.choices?.[0]?.message?.content;if(!c)throw new Error('Boş yanıt');return c;
-}
-
-function rmWelcome(){document.getElementById('welcome')?.remove();}
-function showWelcome(){
-  const chatEl=document.getElementById('chat');if(document.getElementById('welcome'))return;
-  const w=document.createElement('div');w.id='welcome';
-  w.innerHTML=`
-    <div class="w-orb-wrap"><div class="w-orb">🤖</div><div class="w-orb-ring"></div><div class="w-orb-ring2"></div></div>
-    <div class="w-title">Merhaba, ben ZekaBot</div>
-    <div class="w-sub">Türkiye'nin en gelişmiş AI asistanı. Sohbet et, kod yaz, görsel üret, mod yap.</div>
-    <div class="w-meta">
-      <span class="my-stamp-lg"><span class="heart">🤍</span>TEK GERÇEK M&nbsp;Y · Muhammed Yağız</span>
-    </div>
-    <div class="starter-grid">
-      <div class="s-card" onclick="qSend('Merhaba! Kendini tanıt. Kim yarattı seni ve ne yapabilirsin?')"><div class="si">🤖</div><div class="st">Kendini tanıt</div><div class="sd">ZekaBot kim, ne yapabilir?</div></div>
-      <div class="s-card" onclick="setMode('image');document.getElementById('txt').focus()"><div class="si">🎨</div><div class="st">Görsel oluştur</div><div class="sd">Flux AI ile harika görseller</div></div>
-      <div class="s-card" onclick="qSend('Python ile tam çalışan bir REST API yaz. FastAPI kullan, hata yönetimi ekle, Türkçe yorum yaz.')"><div class="si">💻</div><div class="st">Kod yaz</div><div class="sd">Python FastAPI örneği</div></div>
-      <div class="s-card" onclick="startMC()"><div class="si">⛏️</div><div class="st">MC Mod yap</div><div class="sd">Sorular → tam çalışan .jar</div></div>
-    </div>`;
-  chatEl.insertBefore(w,chatEl.firstChild);
-}
-
-function addMsg(role,content,anim=true){
-  const chatEl=document.getElementById('chat');rmWelcome();
-  const block=document.createElement('div');block.className='msg-block';
-  if(!S.cfg.anim||!anim)block.style.animation='none';
-  const isUser=role==='user',isErr=role==='error';
-  const avCls=isUser?'usr':'ai';const avLabel=isUser?'S':'Z';const roleName=isUser?'Sen':'ZekaBot';
-  let textContent;
-  if(isErr)textContent=`<span style="color:var(--red)">⚠️ ${esc(content)}</span>`;
-  else if(isUser)textContent=`<span>${esc(content).replace(/\n/g,'<br>')}</span>`;
-  else textContent=renderMD(content);
-  block.innerHTML=`<div class="msg-row"><div class="av ${avCls}">${avLabel}</div><div class="msg-c"><div class="msg-name">${roleName}${!isUser?` <span class="badge-ai">AI</span> <span class="badge-my"><span class="h">🤍</span>M&nbsp;Y</span> <span class="ts">${now()}</span>`:''}</div><div class="msg-t">${textContent}</div>${!isUser&&!isErr?`<div class="msg-acts"><button class="act-b" onclick="cpTxt(this)" data-txt="${escAttr(content)}">📋 Kopyala</button><button class="act-b" onclick="regenLast()">↻ Yenile</button></div>`:''}</div></div>`;
-  chatEl.appendChild(block);if(!isUser&&!isErr&&S.cfg.syntax)addCodeBtns(block);if(S.cfg.scroll)scrollBot();
-}
-function addCodeBtns(container){
-  container.querySelectorAll('pre').forEach(pre=>{
-    if(pre.previousElementSibling?.classList?.contains('code-hd'))return;
-    const code=pre.querySelector('code');const lang=code?.className?.match(/language-(\w+)/)?.[1]||'text';
-    const hd=document.createElement('div');hd.className='code-hd';
-    hd.innerHTML=`<span class="code-lang">${lang}</span><button class="code-cp" onclick="cpCode(this)">📋 Kopyala</button>`;
-    pre.parentNode.insertBefore(hd,pre);if(S.cfg.syntax&&code)hlCode(code);
-  });
-}
-function hlCode(code){
-  let h=code.textContent;
-  h=h.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  ['public','private','protected','static','void','class','interface','import','package','return','new','final','extends','implements','if','else','for','while','do','try','catch','throws','this','super','int','long','double','float','char','boolean','String','List','Map','Set','null','true','false','undefined','function','const','let','var','async','await','def','print','type','enum','from','export','default','pass','yield','lambda','with','as','or','and','not','in','is','del','global','raise','except','typeof','instanceof'].forEach(k=>{h=h.replace(new RegExp(`\\b${k}\\b`,'g'),`<span style="color:#c084fc">${k}</span>`);});
-  h=h.replace(/(["'`])((?:(?!\1)[^\\]|\\.)*)\1/g,'<span style="color:#86efac">$1$2$1</span>');
-  h=h.replace(/\b(\d+\.?\d*)\b/g,'<span style="color:#fbbf24">$1</span>');
-  h=h.replace(/(#.*$|\/\/.*$)/gm,'<span style="color:#6b7280;font-style:italic">$1</span>');
-  h=h.replace(/(\/\*[\s\S]*?\*\/)/g,'<span style="color:#6b7280;font-style:italic">$1</span>');
-  code.innerHTML=h;
-}
-function cpCode(btn){const pre=btn.closest('.code-hd').nextElementSibling;if(!pre)return;cpToClip(pre.textContent);btn.textContent='✓ Kopyalandı';setTimeout(()=>btn.textContent='📋 Kopyala',2000);}
-function cpTxt(btn){cpToClip(btn.dataset.txt);btn.textContent='✓ Kopyalandı';setTimeout(()=>btn.textContent='📋 Kopyala',2000);}
-async function cpToClip(t){try{await navigator.clipboard.writeText(t);toast('Kopyalandı','ok');}catch{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Kopyalandı','ok');}}
-async function regenLast(){
-  if(S.loading||!S.hist.length)return;const last=[...S.hist].reverse().find(m=>m.role==='user');if(!last)return;
-  const t=S.prov==='gemini'?last.parts?.[0]?.text:last.content;if(!t)return;
-  if(S.hist.length>1){S.hist.pop();document.querySelector('#chat .msg-block:last-child')?.remove();}
-  S.loading=true;document.getElementById('snd-btn').disabled=true;showTyping();
-  try{const sys=SYS[S.mode]||SYS.chat;const r=S.prov==='gemini'?await callGemini(S.hist,sys):await callGroq(S.hist,sys);removeTyping();if(S.prov==='gemini')S.hist.push({role:'model',parts:[{text:r}]});else S.hist.push({role:'assistant',content:r});addMsg('ai',r,true);}
-  catch(e){removeTyping();addMsg('error',e.message,false);}
-  S.loading=false;document.getElementById('snd-btn').disabled=false;
-}
-function showTyping(){
-  if(document.getElementById('typ'))return;const chatEl=document.getElementById('chat');
-  const b=document.createElement('div');b.className='typ-block';b.id='typ';
-  b.innerHTML=`<div class="msg-row"><div class="av ai">Z</div><div class="msg-c"><div class="typ-dots"><span></span><span></span><span></span></div></div></div>`;
-  chatEl.appendChild(b);scrollBot();
-}
-function removeTyping(){document.getElementById('typ')?.remove();}
-function clearChat(confirm_=true){
-  if(confirm_&&S.hist.length>0){if(!confirm('Sohbeti temizle?'))return;}
-  saveSess();S.hist=[];S.sessId=null;MC.active=false;MC.hist=[];MC.stage='idle';
-  document.getElementById('chat').innerHTML='';showWelcome();
-  if(confirm_)toast('Temizlendi','ok');
-}
-function toast(msg,type=''){
-  const c=document.getElementById('toasts');const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
-  c.appendChild(t);requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
-  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),260);},2800);
-}
-function playBeep(){if(!S.cfg.sound)return;try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.setValueAtTime(880,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+.1);g.gain.setValueAtTime(.07,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.22);o.start();o.stop(ctx.currentTime+.22);}catch{}}
-function scrollBot(){const cw=document.getElementById('chat-wrap');if(cw&&S.cfg.scroll)cw.scrollTo({top:cw.scrollHeight,behavior:'smooth'});}
-function fmtErr(msg){const m=msg||'';if(m.toLowerCase().includes('failed to fetch'))return`Bağlantı hatası — API'ye ulaşılamıyor.`;if(m.includes('401')||m.includes('403'))return`API anahtarı geçersiz!`;if(m.includes('429'))return`Rate limit — biraz bekle.`;if(m.includes('SAFETY'))return`Güvenlik filtresi devreye girdi.`;return m;}
-function esc(t){if(!t)return'';return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function escInner(t){if(!t)return'';return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function escAttr(t){if(!t)return'';return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-
-function renderMD(text){
-  if(!text)return'';let h=text;
-  h=h.replace(/```(\w+)?(?:\s+[^\n]+)?\n?([\s\S]*?)```/g,(_,lang,code)=>{const l=lang||'text';const ec=escInner(code.trim());return`<div class="code-hd"><span class="code-lang">${l}</span><button class="code-cp" onclick="cpCode(this)">📋 Kopyala</button></div><pre><code class="language-${l}">${ec}</code></pre>`;});
-  h=h.replace(/`([^`\n]+)`/g,'<code>$1</code>');
-  h=h.replace(/\*\*\*([\s\S]*?)\*\*\*/g,'<strong><em>$1</em></strong>');
-  h=h.replace(/\*\*([\s\S]*?)\*\*/g,'<strong>$1</strong>');
-  h=h.replace(/\*([\s\S]*?)\*/g,'<em>$1</em>');
-  h=h.replace(/^#### (.+)$/gm,'<h4>$1</h4>');h=h.replace(/^### (.+)$/gm,'<h3>$1</h3>');h=h.replace(/^## (.+)$/gm,'<h2>$1</h2>');h=h.replace(/^# (.+)$/gm,'<h1>$1</h1>');
-  h=h.replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>');
-  h=h.replace(/(\|.+\|\n?)+/g,match=>{const rows=match.trim().split('\n');if(rows.length<2)return match;const isSep=r=>r.replace(/[\s|:-]/g,'')==='';let html='<table>';let isH=true;rows.forEach(row=>{if(isSep(row)){isH=false;return;}const cells=row.split('|').filter((_,i,a)=>i>0&&i<a.length-1);const tag=isH?'th':'td';html+='<tr>'+cells.map(c=>`<${tag}>${c.trim()}</${tag}>`).join('')+'</tr>';});return html+'</table>';});
-  h=h.replace(/^---+$/gm,'<hr>');
-  h=h.replace(/^[\-\*•] (.+)$/gm,'<li>$1</li>');h=h.replace(/(<li>[\s\S]*?<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
-  h=h.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
-  h=h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>');
-  h=h.replace(/\n\n+/g,'</p><p>');h=h.replace(/\n/g,'<br>');h='<p>'+h+'</p>';
-  ['h1','h2','h3','h4','ul','ol','pre','blockquote','div','hr','table'].forEach(tag=>{h=h.replace(new RegExp(`<p>(<${tag}[^>]*>)`,'g'),'$1');h=h.replace(new RegExp(`(</${tag}>)</p>`,'g'),'$1');});
-  h=h.replace(/<p><\/p>/g,'').replace(/<br><\/p>/g,'</p>');return h;
-}
-</script>
-</body>
-</html>
+    const d=document.createElement('div');d.className='m-opt'+(m.id===S.model?' active':'');d.dataset.id=m
